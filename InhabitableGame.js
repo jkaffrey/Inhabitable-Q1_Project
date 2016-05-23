@@ -3,11 +3,10 @@ var naturalWorldMap = [];
 function objectWithinRange(x, y, range) {
 
   for (var i = x - range; i < x + range; i++) {
-
-    if (naturalWorldMap[i] !== 'undefined') {
+    if (naturalWorldMap[i] != null) {
       for (var j = y - range; j < y + range; j++) {
         if (naturalWorldMap[i] != null && naturalWorldMap[i][j] != null) {
-            return true;
+          return true;
         }
       }
     }
@@ -27,8 +26,9 @@ window.onload = function() {
     grass1: [0,0],
     grass2: [1,0],
     player: [0,4],
-    forest: [3, 1, 4, 3],
-    waterpool: [7, 1, 3, 3]
+    forest: [3, 1, 4, 3], //produce wood
+    waterpool: [7, 1, 3, 3], //produce water
+    drypatch: [10, 1, 3, 3] // produce sand
   });
 
   //method to randomy generate the map
@@ -37,14 +37,14 @@ window.onload = function() {
 
     for(var i = 0; i < 2048 / 16; i++) {
       for(var j = 0; j < 2048 / 16; j++) {
-        grassType = ((i % 2 === 0 && j % 2 === 0) || (i % 2 !== 0 && j % 2 !== 0)) ? 1 : 2;
+        grassType = 1; //((i % 2 === 0 && j % 2 === 0) || (i % 2 !== 0 && j % 2 !== 0)) ? 1 : 2;
         Crafty.e("2D, Canvas, grass"+grassType)
         .attr({x: i * 16, y: j * 16});
 
         //1 : 50 chance of create a forest at the current location
-        if(i > 0 && i < 2048/16 && j > 0 && j < 2048/16 && Crafty.randRange(0, 50) > 49 && !objectWithinRange(i, j, 4)) {
+        if(i > 0 && i < 2032/16 && j > 0 && j < 2032/16 && Crafty.randRange(0, 50) > 49 && !objectWithinRange(i, j, 4)) {
           Crafty.e("2D, DOM, forest")
-          .attr({x: i * 16, y: j * 16, z});
+          .attr({x: i * 16, y: j * 16, z: z});
           z++;
 
           naturalWorldMap[i] = [];
@@ -57,10 +57,38 @@ window.onload = function() {
         }
 
         //1 : 10 change of a waterpool at the current location
+        if(i > 0 && i < 2032/16 && j > 0 && j < 2032/16 && Crafty.randRange(0, 95) > 94 && !objectWithinRange(i, j, 10)) {
+
+          Crafty.e("2D, DOM, waterpool")
+          .attr({ x: i * 16, y: j * 16 });
+
+          naturalWorldMap[i] = [];
+          naturalWorldMap[i][j] = {
+            type: 'lake',
+            product: Crafty.randRange(200, 800),
+            location: [i, j],
+            size: [48, 48]
+          }
+        }
+
+        //1 : 15 change of a drypatch at the current location
+        if(i > 0 && i < 2032/16 && j > 0 && j < 2032/16 && Crafty.randRange(0, 95) > 94 && !objectWithinRange(i, j, 10)) {
+
+          Crafty.e("2D, DOM, wall_top, drypatch")
+          .attr({ x: i * 16, y: j * 16 });
+
+          naturalWorldMap[i] = [];
+          naturalWorldMap[i][j] = {
+            type: 'drypatch',
+            product: Crafty.randRange(75, 125),
+            location: [i, j],
+            size: [48, 48]
+          }
+        }
       }
     }
 
-    console.log(naturalWorldMap);
+    //console.log(naturalWorldMap);
     //create the bushes along the x-axis which will form the boundaries
     // for(var i = 0; i < 25; i++) {
     //   Crafty.e("2D, Canvas, wall_top, bush"+Crafty.randRange(1,2))
@@ -68,15 +96,15 @@ window.onload = function() {
     //   Crafty.e("2D, DOM, wall_bottom, bush"+Crafty.randRange(1,2))
     //   .attr({x: i * 16, y: 304, z: 2});
     // }
-
-    //create the bushes along the y-axis
-    //we need to start one more and one less to not overlap the previous bushes
-    //   for(var i = 1; i < 19; i++) {
-    //     Crafty.e("2D, DOM, wall_left, bush"+Crafty.randRange(1,2))
-    //     .attr({x: 0, y: i * 16, z: 2});
-    //     Crafty.e("2D, Canvas, wall_right, bush"+Crafty.randRange(1,2))
-    //     .attr({x: 384, y: i * 16, z: 2});
-    //   }
+    //
+    // //create the bushes along the y-axis
+    // //we need to start one more and one less to not overlap the previous bushes
+    // for(var i = 1; i < 19; i++) {
+    //   Crafty.e("2D, DOM, wall_left, bush"+Crafty.randRange(1,2))
+    //   .attr({x: 0, y: i * 16, z: 2});
+    //   Crafty.e("2D, Canvas, wall_right, bush"+Crafty.randRange(1,2))
+    //   .attr({x: 384, y: i * 16, z: 2});
+    // }
   }
 
   //the loading screen that will display while our assets load
@@ -115,16 +143,16 @@ window.onload = function() {
     })
     .collision()
     .onHit("wall_left", function() {
-      this.x += this._speed;
+      this.x = 0;//this._speed;
       this.stop();
     }).onHit("wall_right", function() {
-      this.x -= this._speed;
+      this.x = 0;//this._speed;
       this.stop();
     }).onHit("wall_bottom", function() {
-      this.y -= this._speed;
+      this.y = 0;//this._speed;
       this.stop();
     }).onHit("wall_top", function() {
-      this.y += this._speed;
+      this.y = 0;//this._speed;
       this.stop();
     })
     .fourway(.5);
