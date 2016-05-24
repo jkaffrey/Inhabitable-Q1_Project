@@ -1,23 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script type="text/javascript" src="crafty-min.js"></script>
-  <script type="text/javascript" src="InhabitableGame.js"></script>
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-  <title>Iso</title>
-  <style>
-  body, html { margin:0; padding: 0; overflow:hidden; height: 100%; }
-  </style>
+    <meta charset="utf-8" />
+    <title>Monster Wants Candy demo</title>
+    <style> body { margin: 0; background: #B4D9E7; } </style>
+    <script src="src/phaser.min.js"></script>
+    <script src="src/Boot.js"></script>
+    <script src="src/Preloader.js"></script>
+    <script src="src/MainMenu.js"></script>
+    <script src="src/Game.js"></script>
 </head>
 <body>
-  <div class="container-fluid">
-    <div class="row bg-warning">
-      <p>Window options</p>
-    </div>
-  </div>
+<script>
+(function() {
+    var game = new Phaser.Game(640, 960, Phaser.AUTO, 'game');
+    game.state.add('Boot', Candy.Boot);
+    game.state.add('Preloader', Candy.Preloader);
+    game.state.add('MainMenu', Candy.MainMenu);
+    game.state.add('Game', Candy.Game);
+    game.state.start('Boot');
+})();
+</script>
 </body>
 </html>
