@@ -15,11 +15,15 @@ function objectWithinRange(x, y, range) {
   return false;
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 window.onload = function() {
 
   //start crafty
-  Crafty.init(1136, 1024);
-  Crafty.canvas();
+  Crafty.init(720, 720);
+  //Crafty.canvas();
 
   //turn the sprite map into usable components
   Crafty.sprite(16, "images/textmap.png", {
@@ -42,7 +46,7 @@ window.onload = function() {
         .attr({x: i * 16, y: j * 16});
 
         //1 : 50 chance of create a forest at the current location
-        if(i > 0 && i < 2032/16 && j > 0 && j < 2032/16 && Crafty.randRange(0, 50) > 49 && !objectWithinRange(i, j, 4)) {
+        if(i > 0 && i < 2032/16 && j > 0 && j < 2032/16 && getRandomInt(0, 50) > 49 && !objectWithinRange(i, j, 4)) {
           Crafty.e("2D, DOM, forest")
           .attr({x: i * 16, y: j * 16, z: z});
           z++;
@@ -50,14 +54,14 @@ window.onload = function() {
           naturalWorldMap[i] = [];
           naturalWorldMap[i][j] = {
             type: 'tree',
-            product: Crafty.randRange(50, 150),
+            product: getRandomInt(50, 150),
             location: [i, j],
             size: [64, 48]
           };
         }
 
         //1 : 10 change of a waterpool at the current location
-        if(i > 0 && i < 2032/16 && j > 0 && j < 2032/16 && Crafty.randRange(0, 95) > 94 && !objectWithinRange(i, j, 10)) {
+        if(i > 0 && i < 2032/16 && j > 0 && j < 2032/16 && getRandomInt(0, 95) > 94 && !objectWithinRange(i, j, 10)) {
 
           Crafty.e("2D, DOM, waterpool")
           .attr({ x: i * 16, y: j * 16 });
@@ -65,14 +69,14 @@ window.onload = function() {
           naturalWorldMap[i] = [];
           naturalWorldMap[i][j] = {
             type: 'lake',
-            product: Crafty.randRange(200, 800),
+            product: getRandomInt(200, 800),
             location: [i, j],
             size: [48, 48]
-          }
+          };
         }
 
         //1 : 15 change of a drypatch at the current location
-        if(i > 0 && i < 2032/16 && j > 0 && j < 2032/16 && Crafty.randRange(0, 95) > 94 && !objectWithinRange(i, j, 10)) {
+        if(i > 0 && i < 2032/16 && j > 0 && j < 2032/16 && getRandomInt(0, 95) > 94 && !objectWithinRange(i, j, 10)) {
 
           Crafty.e("2D, DOM, wall_top, drypatch")
           .attr({ x: i * 16, y: j * 16 });
@@ -80,7 +84,7 @@ window.onload = function() {
           naturalWorldMap[i] = [];
           naturalWorldMap[i][j] = {
             type: 'drypatch',
-            product: Crafty.randRange(75, 125),
+            product: getRandomInt(75, 125),
             location: [i, j],
             size: [48, 48]
           }
@@ -91,18 +95,18 @@ window.onload = function() {
     //console.log(naturalWorldMap);
     //create the bushes along the x-axis which will form the boundaries
     // for(var i = 0; i < 25; i++) {
-    //   Crafty.e("2D, Canvas, wall_top, bush"+Crafty.randRange(1,2))
+    //   Crafty.e("2D, Canvas, wall_top, bush"+getRandomInt(1,2))
     //   .attr({x: i * 16, y: 0, z: 2});
-    //   Crafty.e("2D, DOM, wall_bottom, bush"+Crafty.randRange(1,2))
+    //   Crafty.e("2D, DOM, wall_bottom, bush"+getRandomInt(1,2))
     //   .attr({x: i * 16, y: 304, z: 2});
     // }
     //
     // //create the bushes along the y-axis
     // //we need to start one more and one less to not overlap the previous bushes
     // for(var i = 1; i < 19; i++) {
-    //   Crafty.e("2D, DOM, wall_left, bush"+Crafty.randRange(1,2))
+    //   Crafty.e("2D, DOM, wall_left, bush"+getRandomInt(1,2))
     //   .attr({x: 0, y: i * 16, z: 2});
-    //   Crafty.e("2D, Canvas, wall_right, bush"+Crafty.randRange(1,2))
+    //   Crafty.e("2D, Canvas, wall_right, bush"+getRandomInt(1,2))
     //   .attr({x: 384, y: i * 16, z: 2});
     // }
   }
@@ -128,38 +132,45 @@ window.onload = function() {
     generateWorld();
 
     //create our player entity with some premade components
-    player = Crafty.e("2D, Canvas, player, Controls, Animate, Collision, Fourway")
+    var player = Crafty.e("2D, DOM, player, Controls, Animate, Collision, Fourway")
     .attr({x: 160, y: 144, z: 1})
-    .animate("walk_left", 6, 4, 8)
-    .animate("walk_right", 9, 4, 11)
-    .animate("walk_up", 3, 4, 5)
-    .animate("walk_down", 0, 4, 2)
     .bind("enterframe", function(e) {
       if (this.isDown("SPACE")) {
         console.log(player.x, player.y);
       }
+      console.log(this);
     }).bind("keyup", function(e) {
       this.stop();
     })
     .collision()
-    .onHit("wall_left", function() {
-      this.x = 0;//this._speed;
-      this.stop();
-    }).onHit("wall_right", function() {
-      this.x = 0;//this._speed;
-      this.stop();
-    }).onHit("wall_bottom", function() {
-      this.y = 0;//this._speed;
-      this.stop();
-    }).onHit("wall_top", function() {
-      this.y = 0;//this._speed;
-      this.stop();
-    })
+    // .onHit("wall_left", function() {
+    //   this.x = 0;//this._speed;
+    //   this.stop();
+    // }).onHit("wall_right", function() {
+    //   this.x = 0;//this._speed;
+    //   this.stop();
+    // }).onHit("wall_bottom", function() {
+    //   this.y = 0;//this._speed;
+    //   this.stop();
+    // }).onHit("wall_top", function() {
+    //   this.y = 0;//this._speed;
+    //   this.stop();
+    // })
     .fourway(.5);
+
+    Crafty.viewport.clampToEntities = false
+    Crafty.viewport.follow(player, -60, 0);
   });
 
-  //Crafty.viewport.clampToEntities = false;
-  //Crafty.viewport.follow(player, -60, 0);
+  //Crafty.viewport.scale(2);
+  //Crafty.one("CameraAnimationDone", function() {
+  //console.log(player);
+
+  //});
+  //Crafty.viewport.centerOn(player, 3000);
+
+  // Crafty.viewport.clampToEntities = false;
+  // Crafty.viewport.follow(player, -60, 0);
 
   Crafty.addEvent(this, Crafty.stage.elem, "mousedown", function(e) {
     if(e.button > 1) return;
@@ -181,3 +192,31 @@ window.onload = function() {
     });
   });
 };
+
+// window.onload = function() {
+//   Crafty.init(500, 350)
+//   .background('#eee');
+//   //Crafty.canvas();
+//   Crafty.e('Earth, 2D, DOM, Canvas, Color')
+//   .attr({
+//     x: 0,
+//     y: 100,
+//     w: 480,
+//     h: 400
+//   })
+//   .color('#6C3108');
+//
+//   var hero = Crafty.e('Hero, 2D, Canvas, Color, Gravity, Fourway')
+//   .attr({
+//     x: 60,
+//     y: 90,
+//     w: 10,
+//     h: 20
+//   })
+//   .color('#338')
+//   .gravity('Earth')
+//   .fourway(4);
+//   Crafty.viewport.clampToEntities = false
+//   Crafty.viewport.follow(hero, -60, 0);
+// }
+//Crafty.viewport.centerOn(hero, 10);
