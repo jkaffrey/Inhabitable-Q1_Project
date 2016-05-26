@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js" type="text/javascript"></script>
   <script src="./InhabitableGame.js"></script>
   <script src="./Operations.js"></script>
   <script src="./BuildingCreator.js"></script>
@@ -61,13 +62,13 @@
                 </div>
                 <div id="products">
                   <tr>
-                    <td><span>Coal: </span><span id="coal">0</span><span> Pounds (</span><span id="coalVal"></span><span> per)</span></td><td><button type="button" class="btn btn-primary" onclick="sellResource('coalOre')">Sell</button></td>
+                    <td><span>Coal: </span><span id="coalOre">0</span><span> Pounds (</span><span id="coalVal"></span><span> per)</span></td><td><button type="button" class="btn btn-primary" onclick="sellResource('coalOre')">Sell</button></td>
                   </tr>
                   <tr>
-                    <td><span>Iron: </span><span id="iron">0</span><span> Pounds (</span><span id="ironVal"></span><span> per)</span></td><td><button type="button" class="btn btn-primary" onclick="sellResource('ironOre')">Sell</button></td>
+                    <td><span>Iron: </span><span id="ironOre">0</span><span> Pounds (</span><span id="ironVal"></span><span> per)</span></td><td><button type="button" class="btn btn-primary" onclick="sellResource('ironOre')">Sell</button></td>
                   </tr>
                   <tr>
-                    <td><span>Gold: </span><span id="gold">0</span><span> Pounds (</span><span id="goldVal"></span><span> per)</span></td><td><button type="button" class="btn btn-primary" onclick="sellResource('goldOre')">Sell</button></td>
+                    <td><span>Gold: </span><span id="goldOre">0</span><span> Pounds (</span><span id="goldVal"></span><span> per)</span></td><td><button type="button" class="btn btn-primary" onclick="sellResource('goldOre')">Sell</button></td>
                   </tr>
                 </div>
               </tbody>
@@ -93,7 +94,7 @@
             </ul>
           </div>
         </div>
-        <div class="col-sm-2 bg-warning" id="buildIt">
+        <div class="col-sm-2 bg-warning draggable" id="buildIt">
           <h4 id="buildText">Build</h4>
           <img id="mini" src="images/mini.png">
           <img id="close" src="images/close.png">
@@ -226,7 +227,7 @@
                 </li>
                 <li><a href="#" onclick="createCoalGenerator()">Coal Generator</a>
                   <ul>
-                    <li>Cost: $150</li>
+                    <li>Cost: $500</li>
                     <li>Lumber: 15</li>
                     <li>Coal: 30</li>
                     <li>5 coal / op.</li>

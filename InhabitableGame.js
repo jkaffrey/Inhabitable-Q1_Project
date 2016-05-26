@@ -9,9 +9,9 @@ var resources = {
   tobacco: 0,
   fruits: 0,
   vegies: 0,
-  coal: 0,
-  iron: 0,
-  gold: 0
+  coalOre: 0,
+  ironOre: 0,
+  goldOre: 0
 };
 
 var filledSpaces = [];
@@ -74,7 +74,7 @@ var associationsList = {
   'ironMine': 'ironOre',
   'goldMine': 'goldOre',
   'waterpump': 'waterpool',
-  'lumbermill': 'forest'
+  'lumbermill': 'forest',
 };
 
 function pauseOrResume() {
@@ -122,10 +122,16 @@ function canIOperate(buildObj) {
   var iAmA = buildObj.type;
   var correctPair = associationsList[iAmA];
 
-  if (left != null && left.type === correctPair) return left;
-  if (right != null && right.type === correctPair) return right;
-  if (up != null && up.type === correctPair) return up;
-  if (down != null && down.type === correctPair) return down;
+  if (iAmA === 'coalMine' || iAmA === 'ironMine' || iAmA === 'goldMine' || iAmA === 'waterpump' || iAmA === 'lumbermill') {
+
+    if (left != null && left.type === correctPair) return left;
+    if (right != null && right.type === correctPair) return right;
+    if (up != null && up.type === correctPair) return up;
+    if (down != null && down.type === correctPair) return down;
+  } else {
+
+    return {type: 'value', amount: 0 };
+  }
 
   return null;
 }
@@ -415,6 +421,8 @@ function createGrassPlane() {
 
 $(function() {
 
+
+  $( ".buildIt" ).draggable();
   //createBuildinding(0, { water: 0 }, {});
   createGrassPlane();
 
