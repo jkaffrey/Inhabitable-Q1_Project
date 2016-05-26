@@ -14,13 +14,12 @@
 </head>
 <body>
   <center>
+    <img class="logo" src="images/logo.png">
     <div class="container-fluid">
-      <div class="row bg-warning">
-        <h3>Welcome To</h3>
-        <h1>Inhabitable</h1>
+      <div class="row bg-warning" id="titleBar">
       </div>
-      <div class="row bg-success">
-        <div class="col-md-3" id="gameStats">
+      <div class="row">
+        <div class="col-md-3 bg-success" id="gameStats">
           <h4>Game Statistics</h4>
           <div id="money">
             <h5>Money</h5>
@@ -82,7 +81,6 @@
         </div>
         <div class="col-md-6" id="buildings">
           <div class="row">
-            <h4>Resource Map</h4>
             <canvas id="canvas" width="400" height="400" style="border: 1px solid black;"></canvas>
           </div>
           <div class="row">
@@ -96,9 +94,11 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-3">
-          <h4>Build</h4>
-
+        <div class="col-md-2 bg-warning" id="buildIt">
+          <h4 id="buildText">Build</h4>
+          <img id="mini" src="images/mini.png">
+          <img id="close" src="images/close.png">
+          <br />
           <div class="btn-group btn-block" role="group">
             <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Importation
@@ -156,97 +156,94 @@
                   <li>Coffee: 10</li>
                   <li>Tobacco: 10</li>
                 </ul></li>
-            </ul>
-          </div>
-
-          <div class="btn-group btn-block" role="group">
-            <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Resources
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#" onclick="createLumberMill()">Lumber Mill</a>
-                <ul>
-                  <li>Cost: $200</li>
-                </ul>
-              </li>
-              <li><a href="#" onclick="createWaterPump()">Water Pump</a>
-                <ul>
-                  <li>Cost: $150</li>
-                  <li>Lumber: 15</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
-          <div class="btn-group btn-block" role="group">
-            <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Mines
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#" onclick="createCoalMine()">Coal Mine</a>
-                <ul>
-                  <li>Cost: $500</li>
-                  <li>Lumber: 50</li>
-                  <li>2 power / op.</li>
-                </ul>
-              </li>
-              <li><a href="#" onclick="createIronMine()">Iron Mine</a>
-                <ul>
-                  <li>Cost: $750</li>
-                  <li>Lumber: 50</li>
-                  <li>Coal: 10</li>
-                  <li>5 power / op.</li>
-                </ul>
-              </li>
-              <li><a href="#" onclick="createGoldMine()">Gold Mine</a>
-                <ul>
-                  <li>Cost: $1000</li>
-                  <li>Lumber: 50</li>
-                  <li>Coal: 10</li>
-                  <li>Iron: 20</li>
-                  <li>10 power / op.</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
-          <div class="btn-group btn-block" role="group">
-            <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Power Generation
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#" onclick="createWaterTurbine()">Water Turbine</a>
-                <ul>
-                  <li>Cost: $300</li>
-                  <li>Lumber: 30</li>
-                  <li>5 water / op.</li>
-                </ul>
-              </li>
-              <li><a href="#" onclick="createCoalGenerator()">Coal Generator</a>
-                <ul>
-                  <li>Cost: $150</li>
-                  <li>Lumber: 15</li>
-                  <li>Coal: 30</li>
-                  <li>5 coal / op.</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
-          <div class="row">
-            <div class="information">
-              <h4>Information</h4>
-              <span>Resource: </span><span id="resourceType"></span><br />
-              <span>Amount Remaining: </span><span id="resourceRemaining"></span><br />
-              <span>Tile: </span><span id="xyclick">(?, ?)</span>
+              </ul>
             </div>
+
+            <div class="btn-group btn-block" role="group">
+              <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Resources
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="#" onclick="createLumberMill()">Lumber Mill</a>
+                  <ul>
+                    <li>Cost: $200</li>
+                  </ul>
+                </li>
+                <li><a href="#" onclick="createWaterPump()">Water Pump</a>
+                  <ul>
+                    <li>Cost: $150</li>
+                    <li>Lumber: 15</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <div class="btn-group btn-block" role="group">
+              <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Mines
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="#" onclick="createCoalMine()">Coal Mine</a>
+                  <ul>
+                    <li>Cost: $500</li>
+                    <li>Lumber: 50</li>
+                    <li>2 power / op.</li>
+                  </ul>
+                </li>
+                <li><a href="#" onclick="createIronMine()">Iron Mine</a>
+                  <ul>
+                    <li>Cost: $750</li>
+                    <li>Lumber: 50</li>
+                    <li>Coal: 10</li>
+                    <li>5 power / op.</li>
+                  </ul>
+                </li>
+                <li><a href="#" onclick="createGoldMine()">Gold Mine</a>
+                  <ul>
+                    <li>Cost: $1000</li>
+                    <li>Lumber: 50</li>
+                    <li>Coal: 10</li>
+                    <li>Iron: 20</li>
+                    <li>10 power / op.</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <div class="btn-group btn-block" role="group">
+              <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Power Generation
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="#" onclick="createWaterTurbine()">Water Turbine</a>
+                  <ul>
+                    <li>Cost: $300</li>
+                    <li>Lumber: 30</li>
+                    <li>5 water / op.</li>
+                  </ul>
+                </li>
+                <li><a href="#" onclick="createCoalGenerator()">Coal Generator</a>
+                  <ul>
+                    <li>Cost: $150</li>
+                    <li>Lumber: 15</li>
+                    <li>Coal: 30</li>
+                    <li>5 coal / op.</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <h4>Information</h4>
+            <span>Resource: </span><span id="resourceType"></span><br />
+            <span>Amount Remaining: </span><span id="resourceRemaining"></span><br />
+            <span>Tile: </span><span id="xyclick">(?, ?)</span>
+
           </div>
         </div>
       </div>
-    </div>
-  </center>
-</body>
-</html>
+    </center>
+  </body>
+  </html>

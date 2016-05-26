@@ -7,3 +7,58 @@
 	background: linear-gradient(to bottom,  #267c99 50%,#007299 50%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#267c99', endColorstr='#007299',GradientType=0 ); /* IE6-9 */
 }
+
+body {
+	background-color: #EDEDED;
+}
+
+#titleBar {
+
+	position: relative;
+	background-color: #FF5840;
+	height: 100px;
+	top: -11em;
+	z-index: -10;
+}
+
+#gameStats, #buildIt {
+
+	box-shadow: 0px 5px 10px #888888;
+	padding: 1em;
+	margin: 1em;
+	top: -10em;
+}
+
+#buildings {
+
+	top: -5em;
+}
+
+.logo {
+
+	position: relative;
+}
+
+#buildText {
+
+	position: absolute;
+	display: inline-flex;
+	left: 12px;
+	top: -2px;
+}
+
+#mini {
+
+	position: absolute;
+	display: inline-flex;
+	top: 8px;
+	right: 36px;
+}
+
+#close {
+
+	position: absolute;
+	display: inline-flex;
+	top: 8px;
+	right: 16px;
+}
