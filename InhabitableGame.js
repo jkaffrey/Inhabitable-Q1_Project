@@ -25,7 +25,7 @@ var rawResources = {
 
 var start = +(new Date);
 
-var money = 1000; //TODO: change back
+var money = 100;
 var upkeepCost = 0;
 
 var points = 0;
@@ -375,7 +375,7 @@ function createGrassPlane() {
           });
         }
 
-        //attempt to generate gold ore at current location
+        //attempt to generate waterpool at current location
         if (Math.random() < .005 && isSpaceFull(x * base, y * base) == null && rawResources['lakes'].length < 7) {
 
           filledSpaces.push([x * base, y * base]);
@@ -514,7 +514,7 @@ $(function() {
       var buildingAt = getBuildInAt(currClickX, currClickY);
       if (resourceAt != null) {
         document.getElementById('resourceType').innerHTML = localizeName(resourceAt.type);
-        document.getElementById('resourceRemaining').innerHTML = resourceAt.amount + ' remaing';
+        document.getElementById('resourceRemaining').innerHTML = resourceAt.amount + ' remaining';
       } else {
 
         if (buildingAt != null) {
@@ -528,6 +528,12 @@ $(function() {
           document.getElementById('removeBuild').disabled = true;
         }
       }
+    }
+
+    if (money < 0) {
+
+      alert('You have lost.');
+      location.reload();
     }
   }, 1000);
 
@@ -549,7 +555,7 @@ $(function() {
 
     if (resourceAt != null) {
       document.getElementById('resourceType').innerHTML = localizeName(resourceAt.type);
-      document.getElementById('resourceRemaining').innerHTML = resourceAt.amount;
+      document.getElementById('resourceRemaining').innerHTML = resourceAt.amount + ' remaining';
     } else {
 
       if (buildingAt != null) {
