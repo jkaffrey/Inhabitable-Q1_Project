@@ -46,6 +46,8 @@ var lastClickY = -1;
 var currClickX = -1;
 var currClickY = -1;
 
+var isPaused = false;
+
 var grassSprite = new Image();
 var grassSprite1 = new Image();
 var forestTree = new Image();
@@ -74,6 +76,19 @@ var associationsList = {
   'waterpump': 'waterpool',
   'lumbermill': 'forest'
 };
+
+function pauseOrResume() {
+
+  if (!isPaused) {
+
+    isPaused = true;
+    document.getElementById('playPause').src = './images/playButton.png';
+  } else {
+
+    isPaused = false;
+    document.getElementById('playPause').src = './images/pauseButton.png';
+  }
+}
 
 function removeBuildAt(x, y) {
 
@@ -410,106 +425,108 @@ $(function() {
 
   setInterval(function() {
 
-    var now = +(new Date);
-    var timeElapsed = Math.round((now - start) / 1000);
+    if (!isPaused) {
+      var now = +(new Date);
+      var timeElapsed = Math.round((now - start) / 1000);
 
-    //populate body with building
-    var importation = document.getElementById('importationBuild');
-    importation.innerHTML = "<img src=\"images/dock.png\">";
-    var farms = document.getElementById('farmBuild');
-    farms.innerHTML = "<img src=\"images/farm.png\">";
-    var resourceBuild = document.getElementById('resourceBuild');
-    resourceBuild.innerHTML = "<img src=\"images/lumbermill.png\">";
-    var mine = document.getElementById('mineBuild');
-    mine.innerHTML = "<img src=\"images/coalMine.png\">";
-    var powerBuild = document.getElementById('powerBuild');
-    powerBuild.innerHTML = "<img src=\"images/powerGeneration.png\">";
+      //populate body with building
+      var importation = document.getElementById('importationBuild');
+      importation.innerHTML = "<img src=\"images/dock.png\">";
+      var farms = document.getElementById('farmBuild');
+      farms.innerHTML = "<img src=\"images/farm.png\">";
+      var resourceBuild = document.getElementById('resourceBuild');
+      resourceBuild.innerHTML = "<img src=\"images/lumbermill.png\">";
+      var mine = document.getElementById('mineBuild');
+      mine.innerHTML = "<img src=\"images/coalMine.png\">";
+      var powerBuild = document.getElementById('powerBuild');
+      powerBuild.innerHTML = "<img src=\"images/powerGeneration.png\">";
 
-    for (var j = 0; j < buildingArray.length; j++) {
+      for (var j = 0; j < buildingArray.length; j++) {
 
-      var myCurrentBuidling = buildingArray[j].type;
-      if (myCurrentBuidling === 'dock' || myCurrentBuidling === 'airport') {
+        var myCurrentBuidling = buildingArray[j].type;
+        if (myCurrentBuidling === 'dock' || myCurrentBuidling === 'airport') {
 
-        importation.innerHTML += '<p>' + buildingToString(buildingArray[j]) + '</p>';
-      } else if (myCurrentBuidling === 'lumbermill' || myCurrentBuidling === 'waterpump') {
+          importation.innerHTML += '<p>' + buildingToString(buildingArray[j]) + '</p>';
+        } else if (myCurrentBuidling === 'lumbermill' || myCurrentBuidling === 'waterpump') {
 
-        resourceBuild.innerHTML += '<p>' + buildingToString(buildingArray[j]) + '</p>';
+          resourceBuild.innerHTML += '<p>' + buildingToString(buildingArray[j]) + '</p>';
+        }
       }
-    }
 
-    //other things
-    document.getElementById('time').innerHTML = (timeElapsed + "").toHHMMSS();
-    for (var i = 0; i < buildingArray.length; i++) {
+      //other things
+      document.getElementById('time').innerHTML = (timeElapsed + "").toHHMMSS();
+      for (var i = 0; i < buildingArray.length; i++) {
 
-      if (timeElapsed % buildingArray[i].useTime === 0) {
+        if (timeElapsed % buildingArray[i].useTime === 0) {
 
-        if (resources[buildingArray[i].productEaten] - buildingArray[i].costEaten < 0) {}
-        else {
-          if (buildingArray[i].type === 'starterHouse' || canIOperate(buildingArray[i]) != null) {
+          if (resources[buildingArray[i].productEaten] - buildingArray[i].costEaten < 0) {}
+          else {
+            if (buildingArray[i].type === 'starterHouse' || canIOperate(buildingArray[i]) != null) {
 
-            var toOpOn = canIOperate(buildingArray[i]);
-            if (toOpOn != null) {
+              var toOpOn = canIOperate(buildingArray[i]);
+              if (toOpOn != null) {
 
-              toOpOn.amount = toOpOn.amount - 1;
-            }
-            resources[buildingArray[i].productEaten] -= buildingArray[i].costEaten;
-            resources[buildingArray[i].resource] += buildingArray[i].productGened;
-            money += buildingArray[i].monies;
-            upkeepCost += buildingArray[i].upkeep;
-            points += buildingArray[i].pts;
-            pollution += buildingArray[i].polutes;
+                toOpOn.amount = toOpOn.amount - 1;
+              }
+              resources[buildingArray[i].productEaten] -= buildingArray[i].costEaten;
+              resources[buildingArray[i].resource] += buildingArray[i].productGened;
+              money += buildingArray[i].monies;
+              upkeepCost += buildingArray[i].upkeep;
+              points += buildingArray[i].pts;
+              pollution += buildingArray[i].polutes;
 
-            if (buildingArray[i].imports > 0) {
-              if (randomRange(0, buildingArray[i].likelihood) > buildingArray[i].likelihood + 1) {
+              if (buildingArray[i].imports > 0) {
+                if (randomRange(0, buildingArray[i].likelihood) > buildingArray[i].likelihood + 1) {
 
-                citizens += randomRange(1, buildingArray[i].imports);
+                  citizens += randomRange(1, buildingArray[i].imports);
+                }
               }
             }
           }
         }
       }
-    }
 
-    if (timeElapsed % 10 === 0) {
+      if (timeElapsed % 10 === 0) {
 
-      money -= upkeepCost;
-      upkeepCost = 0;
-    }
-
-    if (timeElapsed % 5 === 0) {
-
-      money += moneyPerCitizen * citizens;
-    }
-
-    document.getElementById('funds').innerHTML = money;
-    document.getElementById('upkeepCost').innerHTML = upkeepCost;
-    document.getElementById('perCitizen').innerHTML = moneyPerCitizen;
-
-    for (var resource in resources) {
-
-
-      var gotted = document.getElementById(resource);
-      if (gotted != null) {
-        gotted.innerHTML = resources[resource];
+        money -= upkeepCost;
+        upkeepCost = 0;
       }
-    }
 
-    var resourceAt =  getResource(currClickX, currClickY);
-    var buildingAt = getBuildInAt(currClickX, currClickY);
-    if (resourceAt != null) {
-      document.getElementById('resourceType').innerHTML = localizeName(resourceAt.type);
-      document.getElementById('resourceRemaining').innerHTML = resourceAt.amount + ' remaing';
-    } else {
+      if (timeElapsed % 5 === 0) {
 
-      if (buildingAt != null) {
+        money += moneyPerCitizen * citizens;
+      }
 
-        document.getElementById('resourceType').innerHTML = buildingAt.type;
-        document.getElementById('resourceRemaining').innerHTML = '<br />Upkeep Cost: $' + buildingAt.upkeep + '<br />Power Usage: ' + buildingAt.powerConsume + '<br />Power Generated: ' + buildingAt.powerGen +  '<br />Missing Resource: ' + (canIOperate(buildingAt) == null);
-        document.getElementById('removeBuild').disabled = false;
+      document.getElementById('funds').innerHTML = money;
+      document.getElementById('upkeepCost').innerHTML = upkeepCost;
+      document.getElementById('perCitizen').innerHTML = moneyPerCitizen;
+
+      for (var resource in resources) {
+
+
+        var gotted = document.getElementById(resource);
+        if (gotted != null) {
+          gotted.innerHTML = resources[resource];
+        }
+      }
+
+      var resourceAt =  getResource(currClickX, currClickY);
+      var buildingAt = getBuildInAt(currClickX, currClickY);
+      if (resourceAt != null) {
+        document.getElementById('resourceType').innerHTML = localizeName(resourceAt.type);
+        document.getElementById('resourceRemaining').innerHTML = resourceAt.amount + ' remaing';
       } else {
-        document.getElementById('resourceType').innerHTML = 'None';
-        document.getElementById('resourceRemaining').innerHTML = 0;
-        document.getElementById('removeBuild').disabled = true;
+
+        if (buildingAt != null) {
+
+          document.getElementById('resourceType').innerHTML = buildingAt.type;
+          document.getElementById('resourceRemaining').innerHTML = '<br />Upkeep Cost: $' + buildingAt.upkeep + '<br />Power Usage: ' + buildingAt.powerConsume + '<br />Power Generated: ' + buildingAt.powerGen +  '<br />Missing Resource: ' + (canIOperate(buildingAt) == null);
+          document.getElementById('removeBuild').disabled = false;
+        } else {
+          document.getElementById('resourceType').innerHTML = 'None';
+          document.getElementById('resourceRemaining').innerHTML = 0;
+          document.getElementById('removeBuild').disabled = true;
+        }
       }
     }
   }, 1000);
