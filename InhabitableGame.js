@@ -75,6 +75,26 @@ var associationsList = {
   'lumbermill': 'forest'
 };
 
+function removeBuildAt(x, y) {
+
+  var context = document.getElementById('canvas').getContext('2d');
+  for (var i = 0; i < buildingArray.length; i++) {
+
+    if (buildingArray[i].location[0] === x && buildingArray[i].location[1] === y) {
+
+      buildingArray.splice(i, 1);
+
+      if ((currClickX / base % 2 === 0 && currClickY/base % 2 === 0) || (currClickX/base % 2 !== 0 && currClickY/base % 2 !== 0)) {
+        context.drawImage(grassSprite, currClickX - 1, currClickY - 1, 18, 18);
+      } else {
+        context.drawImage(grassSprite1, currClickX - 1, currClickY - 1, 18, 18);
+      }
+
+      break;
+    }
+  }
+}
+
 function canIOperate(buildObj) {
 
   var left = getResource(buildObj.location[0] - base, buildObj.location[1]);
@@ -246,6 +266,17 @@ function getResource(x, y) {
   }
 
   return null;
+}
+
+function getBuildInAt(x, y) {
+
+  for (var i = 0; i < buildingArray.length; i++) {
+
+    if (buildingArray[i].location[0] === x && buildingArray[i].location[1] === y) {
+
+      return buildingArray[i];
+    }
+  }
 }
 
 function localizeName(name) {
@@ -464,13 +495,22 @@ $(function() {
     }
 
     var resourceAt =  getResource(currClickX, currClickY);
+    var buildingAt = getBuildInAt(currClickX, currClickY);
     if (resourceAt != null) {
       document.getElementById('resourceType').innerHTML = localizeName(resourceAt.type);
-      document.getElementById('resourceRemaining').innerHTML = resourceAt.amount;
+      document.getElementById('resourceRemaining').innerHTML = resourceAt.amount + ' remaing';
     } else {
 
-      document.getElementById('resourceType').innerHTML = 'None';
-      document.getElementById('resourceRemaining').innerHTML = 0;
+      if (buildingAt != null) {
+
+        document.getElementById('resourceType').innerHTML = buildingAt.type;
+        document.getElementById('resourceRemaining').innerHTML = '<br />Upkeep Cost: $' + buildingAt.upkeep + '<br />Power Usage: ' + buildingAt.powerConsume + '<br />Power Generated: ' + buildingAt.powerGen +  '<br />Missing Resource: ' + (canIOperate(buildingAt) == null);
+        document.getElementById('removeBuild').disabled = false;
+      } else {
+        document.getElementById('resourceType').innerHTML = 'None';
+        document.getElementById('resourceRemaining').innerHTML = 0;
+        document.getElementById('removeBuild').disabled = true;
+      }
     }
   }, 1000);
 
@@ -487,15 +527,24 @@ $(function() {
     currClickX = x;
     currClickY = y;
 
-    var resourceAt =  getResource(x, y);
+    var resourceAt = getResource(x, y);
+    var buildingAt = getBuildInAt(x, y);
 
     if (resourceAt != null) {
       document.getElementById('resourceType').innerHTML = localizeName(resourceAt.type);
       document.getElementById('resourceRemaining').innerHTML = resourceAt.amount;
     } else {
 
-      document.getElementById('resourceType').innerHTML = 'None';
-      document.getElementById('resourceRemaining').innerHTML = 0;
+      if (buildingAt != null) {
+
+        document.getElementById('resourceType').innerHTML = buildingAt.type;
+        document.getElementById('resourceRemaining').innerHTML = '<br />Upkeep Cost: $' + buildingAt.upkeep + '<br />Power Usage: ' + buildingAt.powerConsume + '<br />Power Generated: ' + buildingAt.powerGen +  '<br />Missing Resource: ' + (canIOperate(buildingAt) == null);
+        document.getElementById('removeBuild').disabled = false;
+      } else {
+        document.getElementById('resourceType').innerHTML = 'None';
+        document.getElementById('resourceRemaining').innerHTML = 0;
+        document.getElementById('removeBuild').disabled = true;
+      }
     }
 
     document.getElementById('xyclick').innerHTML = '(' + x / base + ' ,' + y / base + ')';
@@ -508,7 +557,7 @@ $(function() {
     }
 
     //Redraw the grass texture at the current location
-    if ((lastClickX/base % 2 === 0 && lastClickY/base % 2 === 0) || (lastClickX/base % 2 !== 0 && lastClickY/base % 2 !== 0)) {
+    if ((lastClickX / base % 2 === 0 && lastClickY/base % 2 === 0) || (lastClickX/base % 2 !== 0 && lastClickY/base % 2 !== 0)) {
       context.drawImage(grassSprite, lastClickX - 1, lastClickY - 1, 18, 18);
     } else {
       context.drawImage(grassSprite1, lastClickX - 1, lastClickY - 1, 18, 18);
