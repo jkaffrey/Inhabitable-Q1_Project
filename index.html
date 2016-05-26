@@ -24,9 +24,20 @@
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src="./LoadCanvas.js"></script>
-  <h1 id="mainText">Welcome To Inhabitable</h1>
+  <h1 id="mainText">WELCOME TO INHABITABLE</h1>
   <div id="information">
-    Some text
+    <p>Thanks for coming to play!</p>
+    <p>So what is this game you ask? Well it is a surval based game with the primary focus
+    on collecting resource. The goal is to make money and to build at least one of each struct.
+    You lose when your money goes into the negative so be careful!</p>
+    <p>A few rules, when you build something that collects resoures such as a lumber mill or water pump
+    it must be built directly next to what it collects from. If this is not done, it will not run or collect
+    resources for you, it will however keep taking money as an upkeep cost.</p>
+    <form method="get" action="./inhabitableGame.html">
+      <label for="name">What name would you like to use?&nbsp&nbsp</label><input type="text" id="name" name="name">
+      <input type="submit" value="Let's Play">
+    </form>
+    <!-- <button onclick="location.href = './inhabitableGame.html?name='">Let's Play!</button> -->
   </div>
   <div id="background">
   </div>
