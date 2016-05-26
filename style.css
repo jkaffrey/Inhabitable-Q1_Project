@@ -37,6 +37,7 @@ body {
 .logo {
 
 	position: relative;
+	left: 20px;
 }
 
 #buildText {
