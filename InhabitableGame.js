@@ -336,30 +336,7 @@ function loadSprite(image, src) {
 function createGrassPlane() {
 
   var canvas = document.getElementById('canvas').getContext('2d');
-
-  //grassSprite.onload = function() {
-
-
-  // grassSprite.src = "images/grass.png";
-  // grassSprite1.src = "images/grass1.png";
-  // forestTree.src = "images/littleTree.png";
-  // coalOre.src = "images/coal.png";
-  // ironOre.src = "images/iron.png";
-  // goldOre.src = "images/gold.png";
-  // lakes.src = "images/waterpool.png";
-  // //buildPlace.src = "images/placeholder.png";
-  //
-  // //buildings
-  // dockImg.src = "images/dock.png";
-  // planeImg.src = "images/airport.png";
-  // farmImg.src = "images/farm.png";
-  // lumbermillImg.src = "images/lumbermill.png";
-  // waterpumpImg.src = "images/waterpump.png";
-  // coalMineImg.src = "images/coalMine.png";
-  // ironMineImg.src = "images/ironMine.png";
-  // goldMineImg.src = "images/goldMine.png";
-  // powergenImg.src = "images/powerGeneration.png";
-
+  
   loaders.push(loadSprite(grassSprite, 'images/grass.png'));
   loaders.push(loadSprite(grassSprite1, 'images/grass1.png'));
   loaders.push(loadSprite(forestTree, 'images/littleTree.png'));
