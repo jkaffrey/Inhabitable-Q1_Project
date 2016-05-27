@@ -113,7 +113,7 @@ function createWaterTurbine() {
 
 function createCoalGenerator() {
 
-  createBuildinding(500, { lumber: 30, coal: 50 }, {
+  createBuildinding(500, { lumber: 30, coalOre: 50 }, {
     type: 'coalGenerator',
     powerGen: 15,
     powerConsume: 0,
