@@ -1,5 +1,6 @@
 "use strict";
 
+var loaders = [];
 var buildingArray = [];
 var resources = {
   water: 0,
@@ -320,11 +321,62 @@ function localizeName(name) {
   }
 }
 
+function loadSprite(image, src) {
+
+  var deferred = $.Deferred();
+  image.onload = function() {
+
+    deferred.resolve();
+  };
+
+  image.src = src;
+  return deferred.promise();
+}
+
 function createGrassPlane() {
 
   var canvas = document.getElementById('canvas').getContext('2d');
 
-  grassSprite.onload = function() {
+  //grassSprite.onload = function() {
+
+
+  // grassSprite.src = "images/grass.png";
+  // grassSprite1.src = "images/grass1.png";
+  // forestTree.src = "images/littleTree.png";
+  // coalOre.src = "images/coal.png";
+  // ironOre.src = "images/iron.png";
+  // goldOre.src = "images/gold.png";
+  // lakes.src = "images/waterpool.png";
+  // //buildPlace.src = "images/placeholder.png";
+  //
+  // //buildings
+  // dockImg.src = "images/dock.png";
+  // planeImg.src = "images/airport.png";
+  // farmImg.src = "images/farm.png";
+  // lumbermillImg.src = "images/lumbermill.png";
+  // waterpumpImg.src = "images/waterpump.png";
+  // coalMineImg.src = "images/coalMine.png";
+  // ironMineImg.src = "images/ironMine.png";
+  // goldMineImg.src = "images/goldMine.png";
+  // powergenImg.src = "images/powerGeneration.png";
+
+  loaders.push(loadSprite(grassSprite, 'images/grass.png'));
+  loaders.push(loadSprite(grassSprite1, 'images/grass1.png'));
+  loaders.push(loadSprite(forestTree, 'images/littleTree.png'));
+  loaders.push(loadSprite(coalOre, 'images/coal.png'));
+  loaders.push(loadSprite(ironOre, 'images/iron.png'));
+  loaders.push(loadSprite(goldOre, 'images/gold.png'));
+  loaders.push(loadSprite(lakes, 'images/waterpool.png'));
+  loaders.push(loadSprite(dockImg, 'images/dock.png'));
+  loaders.push(loadSprite(planeImg, 'images/farm.png'));
+  loaders.push(loadSprite(lumbermillImg, 'images/lumbermill.png'));
+  loaders.push(loadSprite(waterpumpImg, 'images/waterpump.png'));
+  loaders.push(loadSprite(coalMineImg, 'images/coalMine.png'));
+  loaders.push(loadSprite(ironMineImg, 'images/ironMine.png'));
+  loaders.push(loadSprite(goldMineImg, 'images/goldMine.png'));
+  loaders.push(loadSprite(powergenImg, 'images/powerGeneration.png'));
+
+  $.when.apply(null, loaders).done(function() {
     for (var x = 0; x < squareSize/base; x++) {
       for (var y = 0; y < squareSize/base; y++) {
         if ((x % 2 === 0 && y % 2 === 0) || (x % 2 !== 0 && y % 2 !== 0)) {
@@ -394,29 +446,9 @@ function createGrassPlane() {
         }
       }
     }
-  };
+  });
 
   //console.log(rawResources);
-
-  grassSprite.src = "images/grass.png";
-  grassSprite1.src = "images/grass1.png";
-  forestTree.src = "images/littleTree.png";
-  coalOre.src = "images/coal.png";
-  ironOre.src = "images/iron.png";
-  goldOre.src = "images/gold.png";
-  lakes.src = "images/waterpool.png";
-  //buildPlace.src = "images/placeholder.png";
-
-  //buildings
-  dockImg.src = "images/dock.png";
-  planeImg.src = "images/airport.png";
-  farmImg.src = "images/farm.png";
-  lumbermillImg.src = "images/lumbermill.png";
-  waterpumpImg.src = "images/waterpump.png";
-  coalMineImg.src = "images/coalMine.png";
-  ironMineImg.src = "images/ironMine.png";
-  goldMineImg.src = "images/goldMine.png";
-  powergenImg.src = "images/powerGeneration.png";
 }
 
 $(function() {
